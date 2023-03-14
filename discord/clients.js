@@ -1,5 +1,6 @@
 const { Client, GatewayIntentBits, REST, Routes, Collection, } = require('discord.js');
 const Bot = require('../models/Bot');
+const { getPlugins } = require('../plugins');
 const slashCommandBuilder = require('./slashCommandBuilder');
 
 const clients = [];
@@ -9,7 +10,10 @@ const readCommands = (slashCommands) =>
     const commands = [];
     slashCommands.forEach(command =>
     {
-        commands.push(slashCommandBuilder(command));
+        commands.push(slashCommandBuilder({ ...command, callback: (client, interaction) => 
+        {
+            interaction.reply({ embeds: [command.reply] });
+        }}));
     });
 
     return commands;
@@ -29,6 +33,22 @@ const parseCommandsJSON = (commands) =>
 const loginClient = async({ name: botUsername, image, activity, token, botId, guildIds, plugins, slashCommands }, imageLoad=false) =>
 {
     const commands = readCommands(slashCommands);
+
+    const pluginsList = getPlugins();
+    pluginsList.forEach(plugin =>
+    {
+        plugins.forEach(dbPlugin =>
+        {
+            if(plugin.name === dbPlugin.name)
+            {
+                plugin.commands.forEach(cmd =>
+                {
+                    commands.push(cmd);
+                });
+            } 
+        });
+    });
+
     const parsedCommands = parseCommandsJSON(commands);
 
     try 
