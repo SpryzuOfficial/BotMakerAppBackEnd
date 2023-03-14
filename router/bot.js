@@ -3,13 +3,12 @@ const { check } = require('express-validator');
 
 const { registerBot, 
         createSlashCommand, 
-        deleteSlashCommand, 
-        addPlugin, 
+        deleteSlashCommand,
         getUserBots,
         editBot,
-        removePlugin, 
         toggleBotStatus,
-        deleteBot} = require('../controllers/bot');
+        deleteBot } = require('../controllers/bot');
+
 const validateJsonFields = require('../middlewares/validateJsonFields');
 
 const router = Router();
@@ -42,16 +41,5 @@ router.delete('/slash/remove', [
     check('uid', 'uid is required').not().isEmpty(),
     validateJsonFields
 ], deleteSlashCommand);
-
-router.post('/plugins/add', [
-    check('name', 'Name is required').not().isEmpty(),
-    check('options', 'Options are required').not().isEmpty(),
-    validateJsonFields
-], addPlugin);
-
-router.delete('/plugins/remove', [
-    check('name', 'Plugin name is required').not().isEmpty(),
-    validateJsonFields
-], removePlugin);
 
 module.exports = router;

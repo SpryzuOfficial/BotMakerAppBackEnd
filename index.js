@@ -9,7 +9,8 @@ const app = express();
     
 const routes = {
     auth: '/auth',
-    bot: '/bot'
+    bot: '/bot',
+    plugin: '/plugin'
 };
 
 (async() => 
@@ -22,6 +23,7 @@ app.use(express.json());
 
 app.use(routes.auth, require('./router/auth'));
 app.use(routes.bot, require('./router/bot'));
+app.use(routes.plugin, require('./router/plugin'));
 
 app.listen(process.env.PORT, () =>
 {
