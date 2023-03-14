@@ -1,5 +1,7 @@
 const { userExists, botExists, userBotMatch, updateDiscordClient } = require('../helpers');
 
+const { getPlugins } = require('../plugins');
+
 const addPlugin = async(req = request, res = response) =>
 {
     try
@@ -75,7 +77,36 @@ const removePlugin = async(req = request, res = response) =>
     }
 }
 
+const getPlugin = async(req = request, res = response) =>
+{
+    try 
+    {
+        const plugins = [];
+        const pluginsObj = getPlugins();
+
+        pluginsObj.forEach(plugin =>
+        {
+            plugins.push(plugin.name);
+        });
+
+        res.status(200).json({
+            ok: true,
+            plugins
+        });
+    } 
+    catch (error) 
+    {
+        console.log(error);
+
+        res.status(500).json({
+            ok: false,
+            msg: 'Internal Server Error'
+        });
+    }
+}
+
 module.exports = {
     addPlugin,
-    removePlugin
+    removePlugin,
+    getPlugin
 }

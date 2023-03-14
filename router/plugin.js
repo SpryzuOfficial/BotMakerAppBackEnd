@@ -1,7 +1,7 @@
 const { Router } = require('express');
 const { check } = require('express-validator');
 
-const { addPlugin, removePlugin } = require('../controllers/plugin');
+const { addPlugin, removePlugin, getPlugin } = require('../controllers/plugin');
 
 const validateJsonFields = require('../middlewares/validateJsonFields');
 
@@ -17,5 +17,7 @@ router.delete('/remove', [
     check('name', 'Plugin name is required').not().isEmpty(),
     validateJsonFields
 ], removePlugin);
+
+router.get('/', getPlugin);
 
 module.exports = router;

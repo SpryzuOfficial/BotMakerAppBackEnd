@@ -24,7 +24,7 @@ const getPlugins = () =>
             });
         }
     
-        plugins.push({name: dir, commands: pluginCommands});
+        plugins.push({ name: dir, commands: pluginCommands });
     });
 
     return plugins;
