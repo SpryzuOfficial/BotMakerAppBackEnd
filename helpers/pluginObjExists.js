@@ -11,9 +11,9 @@ const pluginObjExists = async(plugin, name, data) =>
 
         thisPluginData = initialData;
         plugin.data.push(initialData);
-    }
 
-    await plugin.save();
+        await plugin.save();
+    }
 
     return thisPluginData;
 }
