@@ -117,10 +117,7 @@ const loginClient = async({ name: botUsername, image, activity, token, botId, gu
 
             if(interaction.isButton())
             {
-                const customId = `${interaction.customId}_${interaction.message.id}|${interaction.channelId}|${interaction.message.guildId}`;
-                runButton(client, customId);
-                
-                interaction.deferReply();
+                runButton(interaction);
             }
         });
     

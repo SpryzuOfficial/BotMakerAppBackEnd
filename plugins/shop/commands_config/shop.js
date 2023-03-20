@@ -31,6 +31,8 @@ const decreaseIndex = () =>
     index -= 1;
 }
 
+const getIndex = () => index;
+
 const row = new ActionRowBuilder()
     .addComponents([
         new ButtonBuilder()
@@ -50,9 +52,9 @@ const row = new ActionRowBuilder()
 module.exports = {
     row,
     items,
-    index,
     indexFunc: {
         increaseIndex,
-        decreaseIndex
+        decreaseIndex,
+        getIndex
     }
 }

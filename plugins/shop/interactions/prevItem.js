@@ -5,7 +5,7 @@ const run = (interaction) =>
 {
     interaction.message.delete();
     
-    indexFunc.increaseIndex();
+    indexFunc.decreaseIndex();
     const item = items[indexFunc.getIndex()];
 
     sendUpdatedItem(interaction, item);
