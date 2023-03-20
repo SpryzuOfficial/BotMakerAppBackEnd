@@ -1,4 +1,4 @@
-const { indexFunc, items } = require('../commands_config/shop');
+const { indexFunc } = require('../commands_config/shop');
 const { sendUpdatedItem } = require('../helpers/sendUpdatedItem');
 
 const run = (interaction) =>
@@ -6,9 +6,7 @@ const run = (interaction) =>
     interaction.message.delete();
     
     indexFunc.increaseIndex();
-    const item = items[indexFunc.getIndex()];
-
-    sendUpdatedItem(interaction, item);
+    sendUpdatedItem(interaction);
 }
 
 module.exports = run;
