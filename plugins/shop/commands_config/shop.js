@@ -1,4 +1,4 @@
-const { ActionRowBuilder, ButtonBuilder, ButtonStyle } = require("discord.js");
+const { ActionRowBuilder, ButtonBuilder, ButtonStyle, StringSelectMenuBuilder } = require("discord.js");
 
 const items = [
     {
@@ -31,30 +31,59 @@ const decreaseIndex = () =>
     index -= 1;
 }
 
+const setIndex = (value) =>
+{
+    if(value < 0) return;
+    if(value > items.length) return;
+
+    index = value;
+}
+
 const getIndex = () => index;
 
-const row = new ActionRowBuilder()
+const singleItemRow = new ActionRowBuilder()
     .addComponents([
         new ButtonBuilder()
-            .setCustomId('shop_btn_prevItem')
+            .setCustomId('shop_buttons_prevItem')
             .setLabel('<')
             .setStyle(ButtonStyle.Primary),
         new ButtonBuilder()
-            .setCustomId('shop_btn_nextItem')
+            .setCustomId('shop_buttons_nextItem')
             .setLabel('>')
             .setStyle(ButtonStyle.Primary),
         new ButtonBuilder()
-            .setCustomId('shop_btn_allItems')
+            .setCustomId('shop_buttons_allItems')
             .setLabel('Show All items')
             .setStyle(ButtonStyle.Secondary)
     ]);
 
+const formatedOptions = [];
+
+items.forEach((item, index) =>
+{
+    formatedOptions.push({
+        label: item.title,
+        description: item.description,
+        value: `shop_item_${index}`
+    });
+});
+
+const multipleItemsRow = new ActionRowBuilder()
+    .addComponents([
+        new StringSelectMenuBuilder()
+            .setCustomId('shop_menus_selectItem')
+            .setPlaceholder('Select Item')
+            .setOptions(formatedOptions)
+    ]);
+
 module.exports = {
-    row,
+    singleItemRow,
+    multipleItemsRow,
     items,
     indexFunc: {
         increaseIndex,
         decreaseIndex,
+        setIndex,
         getIndex
     }
 }

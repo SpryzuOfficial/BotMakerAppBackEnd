@@ -1,5 +1,5 @@
-const { indexFunc } = require('../commands_config/shop');
-const { sendUpdatedItem } = require('../helpers/sendUpdatedItem');
+const { indexFunc } = require('../../commands_config/shop');
+const { sendUpdatedItem } = require('../../helpers/sendUpdatedItem');
 
 const run = (interaction) =>
 {

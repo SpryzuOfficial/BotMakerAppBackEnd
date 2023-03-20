@@ -1,6 +1,6 @@
 const { Client, GatewayIntentBits, REST, Routes, Collection, } = require('discord.js');
 const Bot = require('../models/Bot');
-const { getPlugins, runButton } = require('../plugins');
+const { getPlugins, runInteraction } = require('../plugins');
 const slashCommandBuilder = require('./slashCommandBuilder');
 
 const clients = [];
@@ -113,12 +113,11 @@ const loginClient = async({ name: botUsername, image, activity, token, botId, gu
                 if(!command) return;
                 
                 await command.run(client, interaction);
+
+                return;
             }
 
-            if(interaction.isButton())
-            {
-                runButton(interaction);
-            }
+            runInteraction(interaction);
         });
     
         client.on('guildCreate', (guild) =>

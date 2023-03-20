@@ -1,5 +1,5 @@
 const { EmbedBuilder } = require('discord.js');
-const { row, items, indexFunc } = require('../commands_config/shop');
+const { singleItemRow, items, indexFunc } = require('../commands_config/shop');
 
 const sendUpdatedItem = (interaction) =>
 {
@@ -14,7 +14,7 @@ const sendUpdatedItem = (interaction) =>
         .setImage(item.img)
         .setFooter({ text: `Item ${index + 1}/${items.length}` });
 
-    interaction.reply({ embeds: [embed], components: [row] });
+    interaction.reply({ embeds: [embed], components: [singleItemRow] });
 }
 
 module.exports = { sendUpdatedItem }
