@@ -30,4 +30,20 @@ const getPlugins = () =>
     return plugins;
 }
 
-module.exports = { getPlugins };
+const runButton = (client, customId = '') =>
+{
+    const plugin = customId.split('_')[0];
+    const interaction = customId.split('_')[2];
+
+    const data = customId.split('_')[3];
+
+    const interactionsExists = fs.existsSync(`./plugins/${plugin}/interactions`);
+
+    if(interactionsExists)
+    {
+        const int = require(`../plugins/${plugin}/interactions/${interaction}`);
+        int(client, data);
+    }
+}
+
+module.exports = { getPlugins, runButton };
