@@ -24,31 +24,30 @@ const config = async(client = new Client(), { xpMessage, grow, restrictions }) =
 
         thisPluginData.users.forEach(u =>
         {
-            if(u.id === message.author.id)
+            if(u.id !== message.author.id) return;
+            
+            const currentTime = new Date().getTime();
+
+            if((currentTime - u.time) < restrictions.time) return checkStrikes(u, message.content, restrictions);
+            if(message.content.length < restrictions.minLength) return checkStrikes(u, message.content, restrictions);
+            if(restrictions.repeated && (message.content === u.lastMsg)) return checkStrikes(u, message.content, restrictions);
+            
+            u.xp += xpMessage;
+            
+            if(u.xp > u.next)
             {
-                const currentTime = new Date().getTime();
+                u.xp = 0;
+                u.lv += 1;
 
-                if((currentTime - u.time) < restrictions.time) return checkStrikes(u, message.content, restrictions);
-                if(message.content.length < restrictions.minLength) return checkStrikes(u, message.content, restrictions);
-                if(restrictions.repeated && (message.content === u.lastMsg)) return checkStrikes(u, message.content, restrictions);
-                
-                u.xp += xpMessage;
-                
-                if(u.xp > u.next)
-                {
-                    u.xp = 0;
-                    u.lv += 1;
+                if(grow.type === 'linear') u.next = grow.initial * u.lv;
 
-                    if(grow.type === 'linear') u.next = grow.initial * u.lv;
-    
-                    if(grow.type === 'cuadratic') u.next = grow.factor * Math.pow(u.lv, 2) - u.lv + grow.initial;
-                }
-
-
-                u.strikes = 0;
-                u.time = currentTime;
-                u.lastMsg = message.content;
+                if(grow.type === 'cuadratic') u.next = grow.factor * Math.pow(u.lv, 2) - u.lv + grow.initial;
             }
+
+
+            u.strikes = 0;
+            u.time = currentTime;
+            u.lastMsg = message.content;
         });
 
         plugin.data = plugin.data.filter(d => d.name !== 'xpTracker');

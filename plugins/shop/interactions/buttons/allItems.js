@@ -10,7 +10,7 @@ const run = (interaction) =>
     itemsFunc.getItems().forEach(item =>
     {
         formatedFields.push({
-            name: item.title,
+            name: `${item.title} - $${item.price}`,
             value: item.description,
             inline: true
         });

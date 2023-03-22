@@ -32,21 +32,36 @@ const setIndex = (value) =>
 
 const getIndex = () => index;
 
-const singleItemRow = new ActionRowBuilder()
-    .addComponents([
-        new ButtonBuilder()
-            .setCustomId('shop_buttons_prevItem')
-            .setLabel('<')
-            .setStyle(ButtonStyle.Primary),
-        new ButtonBuilder()
-            .setCustomId('shop_buttons_nextItem')
-            .setLabel('>')
-            .setStyle(ButtonStyle.Primary),
-        new ButtonBuilder()
-            .setCustomId('shop_buttons_allItems')
-            .setLabel('Show All items')
-            .setStyle(ButtonStyle.Secondary)
-    ]);
+const generateSingleItemRow = () =>
+{
+    let isPrev = false;
+    let isNext = false;
+
+    if(index === 0) isPrev = true;
+    if((index + 1) === items.length) isNext = true;
+
+    return new ActionRowBuilder()
+        .addComponents([
+            new ButtonBuilder()
+                .setCustomId('shop_buttons_prevItem')
+                .setLabel('<')
+                .setDisabled(isPrev)
+                .setStyle(ButtonStyle.Secondary),
+            new ButtonBuilder()
+                .setCustomId('shop_buttons_nextItem')
+                .setLabel('>')
+                .setDisabled(isNext)
+                .setStyle(ButtonStyle.Secondary),
+            new ButtonBuilder()
+                .setCustomId('shop_buttons_buy')
+                .setLabel('Buy')
+                .setStyle(ButtonStyle.Primary),
+            new ButtonBuilder()
+                .setCustomId('shop_buttons_allItems')
+                .setLabel('Show All items')
+                .setStyle(ButtonStyle.Secondary)
+        ]);
+}
 
 const generateMultipleItemsRow = () =>
 {
@@ -67,11 +82,11 @@ const generateMultipleItemsRow = () =>
                 new ButtonBuilder()
                     .setCustomId('shop_buttons_prevPage')
                     .setLabel('<')
-                    .setStyle(ButtonStyle.Primary),
+                    .setStyle(ButtonStyle.Secondary),
                 new ButtonBuilder()
                     .setCustomId('shop_buttons_nextPage')
                     .setLabel('>')
-                    .setStyle(ButtonStyle.Primary)
+                    .setStyle(ButtonStyle.Secondary)
             ]),
         new ActionRowBuilder()
             .addComponents([
@@ -84,7 +99,7 @@ const generateMultipleItemsRow = () =>
 }
 
 module.exports = {
-    singleItemRow,
+    generateSingleItemRow,
     generateMultipleItemsRow,
     itemsFunc: {
         setItems,
