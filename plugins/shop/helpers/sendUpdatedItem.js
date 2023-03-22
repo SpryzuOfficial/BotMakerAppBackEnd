@@ -1,9 +1,11 @@
 const { EmbedBuilder } = require('discord.js');
-const { singleItemRow, items, indexFunc } = require('../commands_config/shop');
+const { singleItemRow, itemsFunc, indexFunc } = require('../commands_config/shop');
 
 const sendUpdatedItem = (interaction) =>
 {
     const index = indexFunc.getIndex();
+    const items = itemsFunc.getItems();
+    
     const item = items[index];
     
     const embed = new EmbedBuilder()

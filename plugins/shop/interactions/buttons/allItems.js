@@ -1,5 +1,5 @@
 const { EmbedBuilder } = require('discord.js');
-const { items, multipleItemsRow } = require('../../commands_config/shop');
+const { itemsFunc, generateMultipleItemsRow } = require('../../commands_config/shop');
 
 const run = (interaction) =>
 {
@@ -7,7 +7,7 @@ const run = (interaction) =>
 
     const formatedFields = [];
 
-    items.forEach(item =>
+    itemsFunc.getItems().forEach(item =>
     {
         formatedFields.push({
             name: item.title,
@@ -22,7 +22,7 @@ const run = (interaction) =>
         .setTitle('Shop available items')
         .setFields(formatedFields);
 
-    interaction.reply({ embeds: [embed], components: [multipleItemsRow] });
+    interaction.reply({ embeds: [embed], components: generateMultipleItemsRow() });
 }
 
 module.exports = run;

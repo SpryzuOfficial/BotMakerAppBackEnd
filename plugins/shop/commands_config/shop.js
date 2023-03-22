@@ -1,19 +1,10 @@
 const { ActionRowBuilder, ButtonBuilder, ButtonStyle, StringSelectMenuBuilder } = require("discord.js");
 
-const items = [
-    {
-        title: 'Forbidden Evil',
-        description: 'Thrash Metal',
-        color: 0x0000FF,
-        img: 'https://i.ibb.co/zX6mMS1/Forbidden-Evil.jpg'
-    },
-    {
-        title: 'Refuge Denied',
-        description: 'Thrash Metal',
-        color: 0xA020F0,
-        img: 'https://i.ibb.co/qrWVSys/Sanc-refdenied.jpg'
-    }
-]
+let items = [];
+
+const setItems = (array) => items = array;
+
+const getItems = () => items;
 
 let index = 0;
 
@@ -57,29 +48,48 @@ const singleItemRow = new ActionRowBuilder()
             .setStyle(ButtonStyle.Secondary)
     ]);
 
-const formatedOptions = [];
-
-items.forEach((item, index) =>
+const generateMultipleItemsRow = () =>
 {
-    formatedOptions.push({
-        label: item.title,
-        description: item.description,
-        value: `shop_item_${index}`
+    const formatedOptions = [];
+    
+    items.forEach((item, index) =>
+    {
+        formatedOptions.push({
+            label: item.title,
+            description: item.description,
+            value: `shop_item_${index}`
+        });
     });
-});
-
-const multipleItemsRow = new ActionRowBuilder()
-    .addComponents([
-        new StringSelectMenuBuilder()
-            .setCustomId('shop_menus_selectItem')
-            .setPlaceholder('Select Item')
-            .setOptions(formatedOptions)
-    ]);
+    
+    return [
+        new ActionRowBuilder()
+            .addComponents([
+                new ButtonBuilder()
+                    .setCustomId('shop_buttons_prevPage')
+                    .setLabel('<')
+                    .setStyle(ButtonStyle.Primary),
+                new ButtonBuilder()
+                    .setCustomId('shop_buttons_nextPage')
+                    .setLabel('>')
+                    .setStyle(ButtonStyle.Primary)
+            ]),
+        new ActionRowBuilder()
+            .addComponents([
+                new StringSelectMenuBuilder()
+                    .setCustomId('shop_menus_selectItem')
+                    .setPlaceholder('Select Item')
+                    .setOptions(formatedOptions)
+            ])
+    ]
+}
 
 module.exports = {
     singleItemRow,
-    multipleItemsRow,
-    items,
+    generateMultipleItemsRow,
+    itemsFunc: {
+        setItems,
+        getItems
+    },
     indexFunc: {
         increaseIndex,
         decreaseIndex,
