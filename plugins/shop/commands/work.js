@@ -1,13 +1,14 @@
 const { openAccount } = require('../helpers/openAccount');
+const { savePluginData } = require('../../../helpers');
 
 module.exports = {
     name: 'work',
     description: 'Start working',
     callback: async(client, interaction) =>
     {
-        const { plugin, thisPluginData } = await openAccount(interaction);
+        const { plugin, shopData } = await openAccount(interaction);
 
-        thisPluginData.users.forEach(u =>
+        shopData.users.forEach(u =>
         {
             if(u.id !== interaction.member.id) return;
 
@@ -15,9 +16,6 @@ module.exports = {
             interaction.reply(`$1000 were added to your account. Balance: $${u.money}`);
         });
 
-        plugin.data = plugin.data.filter(d => d.name !== 'shop');
-        plugin.data.push(thisPluginData);
-
-        await plugin.save();
+        savePluginData(plugin, shopData, 'shop');
     }
 }

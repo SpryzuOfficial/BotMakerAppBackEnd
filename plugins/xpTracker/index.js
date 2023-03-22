@@ -1,6 +1,6 @@
 const { Client } = require('discord.js');
 
-const { pluginDBExists, pluginObjExists } = require('../../helpers');
+const { pluginDBExists, pluginObjExists, savePluginData } = require('../../helpers');
 const { checkStrikes } = require('./helpers/checkStrikes');
 
 const config = async(client = new Client(), { xpMessage, grow, restrictions }) =>
@@ -8,21 +8,20 @@ const config = async(client = new Client(), { xpMessage, grow, restrictions }) =
     console.log(`Xp Tracker plugin configurated for ${client.user.tag}`);
 
     const plugin = await pluginDBExists(client);
-    
-    const thisPluginData = await pluginObjExists(plugin, 'xpTracker', { users: [] });
+    const trackerData = await pluginObjExists(plugin, 'xpTracker', { users: [] });
 
     client.on('messageCreate', async(message) =>
     {
         if(message.author.bot) return;
 
-        const user = thisPluginData.users.filter(user => user.id === message.author.id)[0];
+        const user = trackerData.users.filter(user => user.id === message.author.id)[0];
 
         if(!user)
         {
-            thisPluginData.users.push({ id: message.author.id, xp: 0, lv: 1, next: grow.initial, time: new Date().getTime() - restrictions.time, strikes: 0, lastMsg: '' });
+            trackerData.users.push({ id: message.author.id, xp: 0, lv: 1, next: grow.initial, time: new Date().getTime() - restrictions.time, strikes: 0, lastMsg: '' });
         }
 
-        thisPluginData.users.forEach(u =>
+        trackerData.users.forEach(u =>
         {
             if(u.id !== message.author.id) return;
             
@@ -50,10 +49,7 @@ const config = async(client = new Client(), { xpMessage, grow, restrictions }) =
             u.lastMsg = message.content;
         });
 
-        plugin.data = plugin.data.filter(d => d.name !== 'xpTracker');
-        plugin.data.push(thisPluginData);
-
-        await plugin.save();
+        savePluginData(plugin, trackerData, 'xpTracker');
     });
 }
 

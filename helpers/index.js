@@ -4,6 +4,7 @@ const userBotMatch = require('./userBotMatch');
 const updateDiscordClient = require('./updateDiscordClient');
 const pluginDBExists = require('./pluginDBExists');
 const pluginObjExists = require('./pluginObjExists');
+const savePluginData = require('./savePluginData');
 
 module.exports = {
     botExists,
@@ -12,4 +13,5 @@ module.exports = {
     updateDiscordClient,
     pluginDBExists,
     pluginObjExists,
+    savePluginData,
 }

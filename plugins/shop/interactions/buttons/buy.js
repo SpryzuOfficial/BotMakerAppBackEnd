@@ -2,19 +2,20 @@ const { EmbedBuilder } = require('discord.js');
 
 const { indexFunc, itemsFunc } = require('../../commands_config/shop');
 const { openAccount } = require('../../helpers/openAccount');
+const { savePluginData } = require('../../../../helpers');
 
 const run = async(interaction) =>
 {
     interaction.message.delete();
 
-    const { plugin, thisPluginData } = await openAccount(interaction);
+    const { plugin, shopData } = await openAccount(interaction);
 
     const index = indexFunc.getIndex();
     const items = itemsFunc.getItems();
     
     const item = items[index];
 
-    thisPluginData.users.forEach(u =>
+    shopData.users.forEach(u =>
     {
         if(u.id !== interaction.member.id) return;
         if(u.money < item.price) return;
@@ -33,10 +34,7 @@ const run = async(interaction) =>
         interaction.reply({ embeds: [embed] });
     });
 
-    plugin.data = plugin.data.filter(d => d.name !== 'shop');
-    plugin.data.push(thisPluginData);
-
-    await plugin.save();
+    savePluginData(plugin, shopData, 'shop');
 }
 
 module.exports = run;
