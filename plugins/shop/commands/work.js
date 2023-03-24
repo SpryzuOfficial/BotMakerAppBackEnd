@@ -13,7 +13,7 @@ module.exports = {
             if(u.id !== interaction.member.id) return;
 
             u.money += 1000;
-            interaction.reply(`$1000 were added to your account. Balance: $${u.money}`);
+            interaction.reply({ content: `$1000 were added to your account. Balance: $${u.money}`, ephemeral: true });
         });
 
         savePluginData(plugin, shopData, 'shop');

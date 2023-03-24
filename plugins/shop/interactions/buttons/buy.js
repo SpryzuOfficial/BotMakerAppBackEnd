@@ -18,7 +18,17 @@ const run = async(interaction) =>
     shopData.users.forEach(u =>
     {
         if(u.id !== interaction.member.id) return;
-        if(u.money < item.price) return;
+        if(u.money < item.price)
+        {
+            interaction.reply({ content: 'You dont have enougth money!', ephemeral: true });
+            return;
+        }
+
+        if(u.items.filter(i => i === item.id).length > 0)
+        {
+            interaction.reply({ content: 'You already have that item!', ephemeral: true });
+            return;
+        }
 
         u.items.push(item.id);
         u.money -= item.price;
